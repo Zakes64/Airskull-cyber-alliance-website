@@ -1,0 +1,2164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airskull Cyber Alliance | Web Development & Cybersecurity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        html { scroll-behavior: smooth; }
+        
+        :root {
+            --primary-dark: #051937;
+            --accent-blue: #00c6ff;
+            --accent-light: #4de3ff;
+            --gradient-bg: linear-gradient(135deg, #051937 0%, #0a2540 50%, #051937 100%);
+        }
+        
+        body {
+            background: var(--gradient-bg);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 198, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #00c6ff, #4de3ff, #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 100%;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .glow {
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.3);
+        }
+        
+        .glow-hover:hover {
+            box-shadow: 0 0 40px rgba(0, 198, 255, 0.5);
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+        }
+        
+        .cyber-grid {
+            background-image: 
+                linear-gradient(rgba(0, 198, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 198, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .animate-pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 198, 255, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 198, 255, 0.6); }
+        }
+        
+        .animate-scan {
+            animation: scan 3s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
+        }
+        
+        .testimonial-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: #00c6ff transparent;
+        }
+        
+        .testimonial-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .testimonial-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .testimonial-scroll::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, #00c6ff, #4de3ff);
+            border-radius: 3px;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 198, 255, 0.2);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00c6ff, #4de3ff);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00c6ff;
+            border-radius: 50%;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .btn-cyber {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(90deg, #00c6ff, #4de3ff);
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        .btn-cyber::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
+        
+        .btn-cyber:hover::before {
+            left: 100%;
+        }
+        
+        .btn-cyber:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 198, 255, 0.3);
+        }
+        
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .faq-content.open {
+            max-height: 500px;
+        }
+        
+        .portfolio-item {
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+        
+        .portfolio-overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .loading-spinner {
+            border: 3px solid rgba(0, 198, 255, 0.1);
+            border-top-color: #00c6ff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .notification {
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 4.7s forwards;
+            z-index: 1000;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateX(100%); }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid #00c6ff;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #00c6ff }
+        }
+        
+        .marquee {
+            animation: marquee 20s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .dark-mode-toggle {
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle {
+            width: 60px;
+            height: 30px;
+            background: rgba(0, 198, 255, 0.2);
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: #00c6ff;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle.active::after {
+            transform: translateX(30px);
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #00c6ff, #4de3ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 198, 255, 0.5);
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #00c6ff, #4de3ff);
+            z-index: 1001;
+            transition: width 0.3s ease;
+        }
+        
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: #00c6ff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+        
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(0, 198, 255, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.2s ease-out;
+            mix-blend-mode: difference;
+        }
+        
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .hexagon {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        
+        .cyber-border {
+            position: relative;
+        }
+        
+        .cyber-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(45deg, #00c6ff, #4de3ff, #00c6ff);
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        .count-up {
+            display: inline-block;
+        }
+        
+        .floating-chat {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #00c6ff, #4de3ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-chat:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 198, 255, 0.5);
+        }
+        
+        .chat-window {
+            position: fixed;
+            bottom: 170px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background: rgba(5, 25, 55, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 198, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .chat-window.active {
+            display: flex;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .pricing-card {
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 198, 255, 0.2);
+        }
+        
+        .featured {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .featured::before {
+            content: 'POPULAR';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: linear-gradient(45deg, #00c6ff, #4de3ff);
+            color: white;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 1;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 198, 255, 0.2);
+        }
+        
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(0, 198, 255, 0.8) transparent transparent transparent;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-padding {
+                padding-top: 4rem;
+                padding-bottom: 4rem;
+            }
+            
+            .chat-window {
+                width: 300px;
+                height: 400px;
+                right: 20px;
+                bottom: 150px;
+            }
+            
+            .floating-chat {
+                right: 20px;
+                bottom: 90px;
+            }
+        }
+    </style>
+</head>
+<body class="text-white overflow-x-hidden relative">
+    <!-- Preloader -->
+    <div id="preloader" class="preloader">
+        <div class="relative">
+            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-cyan-400 to-dark-600 flex items-center justify-center animate-pulse-glow mb-8">
+                <img src="https://html-generator.com/uploads/images/2025/12/08/248049WIVH7PHF7.gif" width="120" height="80" alt="marquee image"></i>
+            </div>
+            <div class="text-center">
+                <h3 class="text-2xl font-bold gradient-text mb-4">Airskull Cyber</h3>
+                <div class="loading-spinner mx-auto"></div>
+                <p class="text-gray-400 mt-4">Loading secure environment...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div id="progressBar" class="progress-bar"></div>
+
+    <!-- Custom Cursor -->
+    <div id="cursorDot" class="cursor-dot"></div>
+    <div id="cursorOutline" class="cursor-outline"></div>
+
+    <!-- Back to Top Button -->
+    <div id="backToTop" class="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <!-- Floating Chat -->
+    <div id="floatingChat" class="floating-chat">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+
+    <!-- Chat Window -->
+    <div id="chatWindow" class="chat-window">
+        <div class="glass-dark p-4 border-b border-white/10 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
+                    <i class="fas fa-robot text-white"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold">Cyber Assistant</h4>
+                    <p class="text-xs text-cyan-400">Online</p>
+                </div>
+            </div>
+            <button id="closeChat" class="text-gray-400 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4">
+            <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-cyan-400/20 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-robot text-cyan-400 text-sm"></i>
+                </div>
+                <div class="glass rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
+                    <p class="text-sm">Hello! I'm your AI security assistant. How can I help you today?</p>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-white/10 p-4">
+            <div class="flex gap-2">
+                <input type="text" id="chatInput" placeholder="Type your message..." class="flex-1 px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 outline-none transition text-white">
+                <button id="sendChat" class="btn-cyber px-6 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="fixed top-24 right-4 z-50 flex flex-col gap-2"></div>
+
+    <!-- Header -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#home" class="flex items-center gap-3 group">
+                <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center glow">
+                   <img src="https://html-generator.com/uploads/images/2025/12/08/248049WIVH7PHF7.gif" width="120" height="80" alt="marquee image"></i>
+                </div>
+                <span class="text-xl font-bold gradient-text">Airskull Cyber</span>
+            </a>
+            
+            <div class="hidden lg:flex items-center gap-8">
+                <a href="#home" class="nav-link text-gray-300 hover:text-white transition">Home</a>
+                <a href="#services" class="nav-link text-gray-300 hover:text-white transition">Services</a>
+                <a href="#portfolio" class="nav-link text-gray-300 hover:text-white transition">Portfolio</a>
+                <a href="#pricing" class="nav-link text-gray-300 hover:text-white transition">Pricing</a>
+                <a href="#team" class="nav-link text-gray-300 hover:text-white transition">Team</a>
+                <a href="#blog" class="nav-link text-gray-300 hover:text-white transition">Blog</a>
+                <a href="#contact" class="nav-link text-gray-300 hover:text-white transition">Contact</a>
+            </div>
+            
+            <div class="hidden lg:flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-sun text-gray-400"></i>
+                    <div id="themeToggle" class="theme-toggle">
+                        <div class="theme-toggle-inner"></div>
+                    </div>
+                    <i class="fas fa-moon text-gray-400"></i>
+                </div>
+                <button id="loginBtn" class="px-4 py-2 text-cyan-400 hover:text-white transition">Login</button>
+                <button class="btn-cyber px-6 py-2 rounded-lg text-gray-900 font-semibold">Get Started</button>
+            </div>
+            
+            <button id="mobileMenuBtn" class="lg:hidden text-2xl text-cyan-400">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="lg:hidden hidden glass absolute top-full left-0 right-0 shadow-xl">
+            <div class="container mx-auto px-6 py-6 flex flex-col gap-4">
+                <a href="#home" class="text-gray-300 hover:text-white py-2 flex items-center gap-3">
+                    <i class="fas fa-home w-6"></i> Home
+                </a>
+                <a href="#services" class="text-gray-300 hover:text-white py-2 flex items-center gap-3">
+                    <i class="fas fa-cogs w-6"></i> Services
+                </a>
+                <a href="#portfolio" class="text-gray-300 hover:text-white py-2 flex items-center gap-3">
+                    <i class="fas fa-briefcase w-6"></i> Portfolio
+                </a>
+                <a href="#pricing" class="text-gray-300 hover:text-white py-2 flex items-center gap-3">
+                    <i class="fas fa-tag w-6"></i> Pricing
+                </a>
+                <a href="#team" class="text-gray-300 hover:text-white py-2 flex items-center gap-3">
+                    <i class="fas fa-users w-6"></i> Team
+                </a>
+                <a href="#blog" class="text-gray-300 hover:text-white py-2 flex items-center gap-3">
+                    <i class="fas fa-blog w-6"></i> Blog
+                </a>
+                <a href="#contact" class="text-gray-300 hover:text-white py-2 flex items-center gap-3">
+                    <i class="fas fa-envelope w-6"></i> Contact
+                </a>
+                <div class="pt-4 border-t border-white/10">
+                    <button class="btn-cyber w-full py-3 rounded-lg text-gray-900 font-semibold">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 backdrop-blur-sm transition-all duration-300">
+        <div class="glass rounded-2xl p-8 w-full max-w-md mx-4 relative animate__animated animate__fadeIn">
+            <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center mb-4">
+                    <i class="fas fa-user-shield text-2xl text-white"></i>
+                </div>
+                <h2 class="text-2xl font-bold gradient-text" id="authTitle">Secure Login</h2>
+                <p class="text-gray-400 text-sm mt-2">Access your secure dashboard</p>
+            </div>
+            <form id="authForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Email</label>
+                    <input type="email" id="authEmail" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 outline-none transition text-white" placeholder="Enter your email">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Password</label>
+                    <input type="password" id="authPassword" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 outline-none transition text-white" placeholder="Enter your password">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 text-sm text-gray-400">
+                        <input type="checkbox" class="rounded bg-white/5 border-white/10 text-cyan-400 focus:ring-cyan-400">
+                        Remember me
+                    </label>
+                    <a href="#" class="text-sm text-cyan-400 hover:underline">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn-cyber w-full py-3 rounded-lg text-gray-900 font-semibold flex items-center justify-center gap-2 mt-6">
+                    <span id="authBtnText">Login</span>
+                    <div id="authSpinner" class="loading-spinner hidden"></div>
+                </button>
+                <div class="relative my-6">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-white/10"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-4 bg-gray-900 text-gray-400">Or continue with</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" class="px-4 py-3 rounded-lg glass flex items-center justify-center gap-2 hover:bg-white/10 transition">
+                        <i class="fab fa-google text-red-400"></i>
+                        <span class="text-sm">Google</span>
+                    </button>
+                    <button type="button" class="px-4 py-3 rounded-lg glass flex items-center justify-center gap-2 hover:bg-white/10 transition">
+                        <i class="fab fa-github text-gray-400"></i>
+                        <span class="text-sm">GitHub</span>
+                    </button>
+                </div>
+            </form>
+            <p class="text-center text-gray-400 mt-6">
+                <span id="authToggleText">Don't have an account?</span>
+                <button id="authToggle" class="text-cyan-400 hover:underline ml-1">Sign Up</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden cyber-grid pt-20">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-float"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-float" style="animation-delay: -3s;"></div>
+            <div id="particles"></div>
+        </div>
+        
+        <!-- Scan Line Effect -->
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-scan"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="flex-1 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-cyan-400 text-sm mb-6 animate__animated animate__fadeIn">
+                        <span class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+                        Securing the Digital Frontier
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 leading-tight hero-title">
+                        <span class="block animate__animated animate__fadeInUp">Next-Gen</span>
+                        <span class="block">
+                            <span class="gradient-text glow-text animate__animated animate__fadeInUp animate__delay-1s">Cyber Security</span>
+                            <span class="block">
+                                <span class="gradient-text glow-text animate__animated animate__fadeInUp animate__delay-2s">& Web Solutions</span>
+                            </span>
+                        </span>
+                    </h1>
+                    <p class="text-lg text-gray-400 max-w-xl mb-8 animate__animated animate__fadeIn animate__delay-1s">
+                        Empowering businesses with cutting-edge cybersecurity solutions and innovative web development. 
+                        We protect your digital assets while building the future of your online presence.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate__animated animate__fadeInUp animate__delay-2s">
+                        <a href="#contact" class="btn-cyber px-8 py-4 rounded-lg text-gray-900 font-bold text-lg inline-flex items-center justify-center gap-2 group">
+                            <i class="fas fa-shield-alt group-hover:rotate-12 transition-transform"></i>
+                            Start Your Protection
+                        </a>
+                        <a href="#services" class="px-8 py-4 rounded-lg border border-cyan-400/50 text-cyan-400 font-semibold hover:bg-cyan-400/10 transition inline-flex items-center justify-center gap-2 group">
+                            <i class="fas fa-play-circle group-hover:scale-110 transition-transform"></i>
+                            Explore Services
+                        </a>
+                    </div>
+                    
+                    <!-- Live Stats -->
+                    <div class="flex flex-wrap gap-8 mt-12 justify-center lg:justify-start">
+                        <div class="text-center animate__animated animate__fadeIn animate__delay-3s">
+                            <div class="text-3xl font-bold gradient-text count-up" data-count="500">0</div>
+                            <div class="text-sm text-gray-400">Projects Delivered</div>
+                        </div>
+                        <div class="text-center animate__animated animate__fadeIn animate__delay-4s">
+                            <div class="text-3xl font-bold gradient-text count-up" data-count="99.9">0</div>
+                            <div class="text-sm text-gray-400">Uptime Guarantee</div>
+                        </div>
+                        <div class="text-center animate__animated animate__fadeIn animate__delay-5s">
+                            <div class="text-3xl font-bold gradient-text">24/7</div>
+                            <div class="text-sm text-gray-400">Security Monitoring</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex-1 relative">
+                    <div class="relative w-80 h-80 md:w-96 md:h-96 mx-auto">
+                        <!-- Animated Rings -->
+                        <div class="absolute inset-0 border-2 border-cyan-400/30 rounded-full animate-ping" style="animation-duration: 3s;"></div>
+                        <div class="absolute inset-4 border border-cyan-400/20 rounded-full animate-ping" style="animation-duration: 4s;"></div>
+                        <div class="absolute inset-8 border border-cyan-400/10 rounded-full animate-ping" style="animation-duration: 5s;"></div>
+                        
+                        <!-- Center Icon -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-40 h-40 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center glow animate-pulse-glow animate__animated animate__pulse animate__infinite">
+                                <i class="fas fa-shield-alt text-5xl text-white animate__animated animate__heartBeat animate__infinite animate__slower"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Orbiting Elements -->
+                        <div class="absolute inset-0 animate-spin" style="animation-duration: 20s;">
+                            <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                                <div class="w-12 h-12 rounded-lg glass flex items-center justify-center hover:scale-110 transition-transform">
+                                    <i class="fas fa-lock text-cyan-400"></i>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
+                                <div class="w-12 h-12 rounded-lg glass flex items-center justify-center hover:scale-110 transition-transform">
+                                    <i class="fas fa-code text-cyan-400"></i>
+                                </div>
+                            </div>
+                            <div class="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                                <div class="w-12 h-12 rounded-lg glass flex items-center justify-center hover:scale-110 transition-transform">
+                                    <i class="fas fa-cloud text-cyan-400"></i>
+                                </div>
+                            </div>
+                            <div class="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2">
+                                <div class="w-12 h-12 rounded-lg glass flex items-center justify-center hover:scale-110 transition-transform">
+                                    <i class="fas fa-server text-cyan-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <a href="#services" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-cyan-400 animate__animated animate__bounce animate__infinite">
+            <span class="text-sm">Scroll Down</span>
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 relative section-padding">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-transparent"></div>
+        <div class="container mx-auto px-6 relative">
+            <div class="text-center mb-16">
+                <span class="text-cyan-400 text-sm font-semibold tracking-wider uppercase">Our Services</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6 animate__animated">What We <span class="gradient-text">Offer</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto animate__animated animate__fadeIn">Comprehensive solutions tailored to protect and propel your digital presence forward.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Web Development -->
+                <div class="glass rounded-2xl p-8 card-hover group animate__animated animate__fadeInUp">
+                    <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-code text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 group-hover:text-cyan-400 transition">Web Development</h3>
+                    <p class="text-gray-400 mb-6">Custom websites and web applications built with cutting-edge technologies for optimal performance.</p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> Responsive Design</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> E-commerce Solutions</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> CMS Integration</li>
+                    </ul>
+                    <a href="#contact" class="inline-flex items-center gap-2 text-cyan-400 mt-6 group-hover:gap-3 transition-all">
+                        Learn More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Cybersecurity -->
+                <div class="glass rounded-2xl p-8 card-hover group animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-shield-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 group-hover:text-cyan-400 transition">Cybersecurity</h3>
+                    <p class="text-gray-400 mb-6">Comprehensive security solutions to protect your business from evolving cyber threats.</p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> Penetration Testing</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> Security Audits</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> Incident Response</li>
+                    </ul>
+                    <a href="#contact" class="inline-flex items-center gap-2 text-cyan-400 mt-6 group-hover:gap-3 transition-all">
+                        Learn More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Cloud Solutions -->
+                <div class="glass rounded-2xl p-8 card-hover group animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-green-400 to-teal-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-cloud text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 group-hover:text-cyan-400 transition">Cloud Solutions</h3>
+                    <p class="text-gray-400 mb-6">Scalable cloud infrastructure and migration services for modern businesses.</p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> Cloud Migration</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> AWS/Azure/GCP</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> DevOps Services</li>
+                    </ul>
+                    <a href="#contact" class="inline-flex items-center gap-2 text-cyan-400 mt-6 group-hover:gap-3 transition-all">
+                        Learn More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Consulting -->
+                <div class="glass rounded-2xl p-8 card-hover group animate__animated animate__fadeInUp animate__delay-3s">
+                    <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-orange-400 to-red-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-users-cog text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 group-hover:text-cyan-400 transition">IT Consulting</h3>
+                    <p class="text-gray-400 mb-6">Strategic technology consulting to align your IT infrastructure with business goals.</p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> Digital Strategy</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> Tech Assessment</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> Training Programs</li>
+                    </ul>
+                    <a href="#contact" class="inline-flex items-center gap-2 text-cyan-400 mt-6 group-hover:gap-3 transition-all">
+                        Learn More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section (New) -->
+    <section id="pricing" class="py-24 bg-black/20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-cyan-400 text-sm font-semibold tracking-wider uppercase">Pricing</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6">Choose Your <span class="gradient-text">Plan</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Flexible pricing plans designed for businesses of all sizes.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Basic Plan -->
+                <div class="glass rounded-2xl p-8 pricing-card">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold mb-2">Basic</h3>
+                        <div class="flex items-center justify-center gap-1">
+                            <span class="text-4xl font-bold gradient-text">$99</span>
+                            <span class="text-gray-400">/month</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-2">For small businesses</p>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> Basic Website Security</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> Monthly Security Scan</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> Email Support</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-times text-gray-500"></i> 24/7 Monitoring</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-times text-gray-500"></i> Advanced Threat Protection</li>
+                    </ul>
+                    <button class="w-full py-3 rounded-lg border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 transition">Get Started</button>
+                </div>
+                
+                <!-- Professional Plan -->
+                <div class="glass rounded-2xl p-8 pricing-card featured relative">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold mb-2">Professional</h3>
+                        <div class="flex items-center justify-center gap-1">
+                            <span class="text-4xl font-bold gradient-text">$299</span>
+                            <span class="text-gray-400">/month</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-2">For growing businesses</p>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> Advanced Security Suite</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> Weekly Security Scans</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> 24/7 Priority Support</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> Real-time Monitoring</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> Threat Intelligence</li>
+                    </ul>
+                    <button class="w-full py-3 rounded-lg btn-cyber text-gray-900 font-semibold">Get Started</button>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="glass rounded-2xl p-8 pricing-card">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
+                        <div class="flex items-center justify-center gap-1">
+                            <span class="text-4xl font-bold gradient-text">Custom</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-2">For large organizations</p>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> Enterprise Security Suite</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> 24/7 Security Operations</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> Dedicated Support Team</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> Custom Solutions</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-cyan-400"></i> SLA Guarantee</li>
+                    </ul>
+                    <button class="w-full py-3 rounded-lg border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 transition">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-transparent"></div>
+        <div class="container mx-auto px-6 relative">
+            <div class="text-center mb-16">
+                <span class="text-cyan-400 text-sm font-semibold tracking-wider uppercase">Portfolio</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6">Our <span class="gradient-text">Work</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Explore our latest projects and see how we've helped businesses transform their digital presence.</p>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="portfolio-filter active px-6 py-2 rounded-full glass text-cyan-400 hover:bg-cyan-400/20 transition" data-filter="all">All</button>
+                <button class="portfolio-filter px-6 py-2 rounded-full glass text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/20 transition" data-filter="web">Web Dev</button>
+                <button class="portfolio-filter px-6 py-2 rounded-full glass text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/20 transition" data-filter="security">Security</button>
+                <button class="portfolio-filter px-6 py-2 rounded-full glass text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/20 transition" data-filter="cloud">Cloud</button>
+            </div>
+            
+            <div id="portfolioGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Portfolio Item 1 -->
+                <div class="portfolio-item rounded-2xl overflow-hidden relative group" data-category="web">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop" alt="E-commerce Platform" class="w-full h-64 object-cover transition duration-500">
+                    <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 transition-opacity flex flex-col justify-end p-6">
+                        <span class="text-cyan-400 text-sm font-semibold">Web Development</span>
+                        <h3 class="text-xl font-bold mb-2">E-commerce Platform</h3>
+                        <p class="text-gray-400 text-sm">Modern shopping experience with AI recommendations</p>
+                        <a href="#" class="text-cyan-400 text-sm mt-3 inline-flex items-center gap-2 hover:gap-3 transition-all">
+                            View Project <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 2 -->
+                <div class="portfolio-item rounded-2xl overflow-hidden relative group" data-category="security">
+                    <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&h=400&fit=crop" alt="Security Dashboard" class="w-full h-64 object-cover transition duration-500">
+                    <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 transition-opacity flex flex-col justify-end p-6">
+                        <span class="text-cyan-400 text-sm font-semibold">Cybersecurity</span>
+                        <h3 class="text-xl font-bold mb-2">Security Dashboard</h3>
+                        <p class="text-gray-400 text-sm">Real-time threat monitoring and analytics</p>
+                        <a href="#" class="text-cyan-400 text-sm mt-3 inline-flex items-center gap-2 hover:gap-3 transition-all">
+                            View Project <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 3 -->
+                <div class="portfolio-item rounded-2xl overflow-hidden relative group" data-category="cloud">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop" alt="Cloud Infrastructure" class="w-full h-64 object-cover transition duration-500">
+                    <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 transition-opacity flex flex-col justify-end p-6">
+                        <span class="text-cyan-400 text-sm font-semibold">Cloud Solutions</span>
+                        <h3 class="text-xl font-bold mb-2">Cloud Infrastructure</h3>
+                        <p class="text-gray-400 text-sm">Enterprise-grade cloud migration project</p>
+                        <a href="#" class="text-cyan-400 text-sm mt-3 inline-flex items-center gap-2 hover:gap-3 transition-all">
+                            View Project <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 4 -->
+                <div class="portfolio-item rounded-2xl overflow-hidden relative group" data-category="web">
+                    <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=600&h=400&fit=crop" alt="SaaS Application" class="w-full h-64 object-cover transition duration-500">
+                    <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 transition-opacity flex flex-col justify-end p-6">
+                        <span class="text-cyan-400 text-sm font-semibold">Web Development</span>
+                        <h3 class="text-xl font-bold mb-2">SaaS Application</h3>
+                        <p class="text-gray-400 text-sm">Subscription management platform</p>
+                        <a href="#" class="text-cyan-400 text-sm mt-3 inline-flex items-center gap-2 hover:gap-3 transition-all">
+                            View Project <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 5 -->
+                <div class="portfolio-item rounded-2xl overflow-hidden relative group" data-category="security">
+                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&h=400&fit=crop" alt="Banking Security" class="w-full h-64 object-cover transition duration-500">
+                    <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 transition-opacity flex flex-col justify-end p-6">
+                        <span class="text-cyan-400 text-sm font-semibold">Cybersecurity</span>
+                        <h3 class="text-xl font-bold mb-2">Banking Security</h3>
+                        <p class="text-gray-400 text-sm">Financial institution security overhaul</p>
+                        <a href="#" class="text-cyan-400 text-sm mt-3 inline-flex items-center gap-2 hover:gap-3 transition-all">
+                            View Project <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 6 -->
+                <div class="portfolio-item rounded-2xl overflow-hidden relative group" data-category="cloud">
+                    <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=600&h=400&fit=crop" alt="DevOps Pipeline" class="w-full h-64 object-cover transition duration-500">
+                    <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 transition-opacity flex flex-col justify-end p-6">
+                        <span class="text-cyan-400 text-sm font-semibold">Cloud Solutions</span>
+                        <h3 class="text-xl font-bold mb-2">DevOps Pipeline</h3>
+                        <p class="text-gray-400 text-sm">CI/CD automation and container orchestration</p>
+                        <a href="#" class="text-cyan-400 text-sm mt-3 inline-flex items-center gap-2 hover:gap-3 transition-all">
+                            View Project <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-24 bg-black/20 section-padding">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-cyan-400 text-sm font-semibold tracking-wider uppercase">Our Team</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6">Meet The <span class="gradient-text">Experts</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">A dedicated team of professionals committed to your digital success.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Team Member 1 -->
+                <div class="glass rounded-2xl p-6 text-center card-hover group">
+                    <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-cyan-400/30 group-hover:border-cyan-400 transition-all duration-300">
+                        <img src="https://html-generator.com/uploads/images/2025/12/15/58355Q46OV1V7G9.jpg?w=200&h=200&fit=crop&crop=face" alt="Sisekelo Thwala" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    </div>
+                    <h3 class="text-xl font-bold mb-1 group-hover:text-cyan-400 transition">Sisekelo Thwala</h3>
+                    <p class="text-cyan-400 text-sm mb-4">CEO & Founder</p>
+                    <p class="text-gray-400 text-sm mb-4">5+ years in cybersecurity. Former security architect at Fortune 50 companies.</p>
+                    <div class="flex justify-center gap-4">
+                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition hover:scale-110"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition hover:scale-110"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition hover:scale-110"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Member 2 -->
+                <div class="glass rounded-2xl p-6 text-center card-hover group">
+                    <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-cyan-400/30 group-hover:border-cyan-400 transition-all duration-300">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face" alt="Sarah Williams" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    </div>
+                    <h3 class="text-xl font-bold mb-1 group-hover:text-cyan-400 transition">Sarah Wiilliams</h3>
+                    <p class="text-cyan-400 text-sm mb-4">CTO</p>
+                    <p class="text-gray-400 text-sm mb-4">Full-stack developer with expertise in cloud architecture and DevOps.</p>
+                    <div class="flex justify-center gap-4">
+                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition hover:scale-110"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition hover:scale-110"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition hover:scale-110"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Member 3 -->
+                <div class="glass rounded-2xl p-6 text-center card-hover group">
+                    <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-cyan-400/30 group-hover:border-cyan-400 transition-all duration-300">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face" alt="Karl Hughes" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    </div>
+                    <h3 class="text-xl font-bold mb-1 group-hover:text-cyan-400 transition">Karl Hughes</h3>
+                    <p class="text-cyan-400 text-sm mb-4">Security Director</p>
+                    <p class="text-gray-400 text-sm mb-4">Certified ethical hacker and penetration testing specialist.</p>
+                    <div class="flex justify-center gap-4">
+                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition hover:scale-110"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition hover:scale-110"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition hover:scale-110"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Member 4 -->
+                <div class="glass rounded-2xl p-6 text-center card-hover group">
+                    <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-cyan-400/30 group-hover:border-cyan-400 transition-all duration-300">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face" alt="Emily Johnson" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    </div>
+                    <h3 class="text-xl font-bold mb-1 group-hover:text-cyan-400 transition">Emily Johnson</h3>
+                    <p class="text-cyan-400 text-sm mb-4">Lead Designer</p>
+                    <p class="text-gray-400 text-sm mb-4">UI/UX expert creating intuitive and beautiful digital experiences.</p>
+                    <div class="flex justify-center gap-4">
+                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition hover:scale-110"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition hover:scale-110"><i class="fab fa-dribbble"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition hover:scale-110"><i class="fab fa-behance"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-24 relative overflow-hidden section-padding">
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/5 via-transparent to-blue-400/5"></div>
+        <div class="container mx-auto px-6 relative">
+            <div class="text-center mb-16">
+                <span class="text-cyan-400 text-sm font-semibold tracking-wider uppercase">Testimonials</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6">What Our <span class="gradient-text">Clients Say</span></h2>
+            </div>
+            
+            <div class="testimonial-scroll flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory px-4">
+                <!-- Testimonial 1 -->
+                <div class="glass rounded-2xl p-8 min-w-[350px] md:min-w-[450px] snap-center flex-shrink-0 card-hover">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face" alt="Client" class="w-14 h-14 rounded-full object-cover">
+                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-cyan-400 rounded-full flex items-center justify-center">
+                                <i class="fas fa-quote-left text-xs text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Robert Anderson</h4>
+                            <p class="text-cyan-400 text-sm">CEO, TechFlow Inc.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-1 text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-400">"Airskull transformed our online presence and fortified our security infrastructure. Their team's expertise is unmatched. Highly recommended!"</p>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="glass rounded-2xl p-8 min-w-[350px] md:min-w-[450px] snap-center flex-shrink-0 card-hover">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop&crop=face" alt="Client" class="w-14 h-14 rounded-full object-cover">
+                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-cyan-400 rounded-full flex items-center justify-center">
+                                <i class="fas fa-quote-left text-xs text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Jessica Martinez</h4>
+                            <p class="text-cyan-400 text-sm">CIO, FinanceHub</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-1 text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-400">"After multiple security breaches, we turned to Airskull. They not only fixed our vulnerabilities but implemented a proactive security strategy."</p>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="glass rounded-2xl p-8 min-w-[350px] md:min-w-[450px] snap-center flex-shrink-0 card-hover">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face" alt="Client" class="w-14 h-14 rounded-full object-cover">
+                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-cyan-400 rounded-full flex items-center justify-center">
+                                <i class="fas fa-quote-left text-xs text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Karl Hughes</h4>
+                            <p class="text-cyan-400 text-sm">Founder, StartupX</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-1 text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="text-gray-400">"From concept to launch, Airskull delivered beyond expectations. Their agile approach and technical prowess made our startup dreams a reality."</p>
+                </div>
+                
+                <!-- Testimonial 4 -->
+                <div class="glass rounded-2xl p-8 min-w-[350px] md:min-w-[450px] snap-center flex-shrink-0 card-hover">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face" alt="Client" class="w-14 h-14 rounded-full object-cover">
+                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-cyan-400 rounded-full flex items-center justify-center">
+                                <i class="fas fa-quote-left text-xs text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Amanda Brown</h4>
+                            <p class="text-cyan-400 text-sm">Director, HealthTech Solutions</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-1 text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-400">"HIPAA compliance was our biggest challenge. Airskull understood our needs and delivered a secure, compliant platform ahead of schedule."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-24 section-padding">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-cyan-400 text-sm font-semibold tracking-wider uppercase">FAQ</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6">Frequently Asked <span class="gradient-text">Questions</span></h2>
+            </div>
+            
+            <div class="max-w-3xl mx-auto space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item glass rounded-xl overflow-hidden hover:bg-white/5 transition">
+                    <button class="faq-toggle w-full px-6 py-5 text-left flex items-center justify-between group">
+                        <span class="font-semibold group-hover:text-cyan-400 transition">What cybersecurity services do you offer?</span>
+                        <i class="fas fa-chevron-down text-cyan-400 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="faq-content px-6 pb-5">
+                        <p class="text-gray-400">We offer comprehensive cybersecurity services including penetration testing, vulnerability assessments, security audits, incident response, managed security services, and security awareness training. Our team specializes in both offensive and defensive security strategies.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="faq-item glass rounded-xl overflow-hidden hover:bg-white/5 transition">
+                    <button class="faq-toggle w-full px-6 py-5 text-left flex items-center justify-between group">
+                        <span class="font-semibold group-hover:text-cyan-400 transition">How long does a typical web development project take?</span>
+                        <i class="fas fa-chevron-down text-cyan-400 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="faq-content px-6 pb-5">
+                        <p class="text-gray-400">Project timelines vary based on complexity and requirements. A simple website might take 2-4 weeks, while complex web applications can take 3-6 months. We provide detailed project timelines during our initial consultation and maintain transparent communication throughout.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="faq-item glass rounded-xl overflow-hidden hover:bg-white/5 transition">
+                    <button class="faq-toggle w-full px-6 py-5 text-left flex items-center justify-between group">
+                        <span class="font-semibold group-hover:text-cyan-400 transition">Do you provide ongoing support and maintenance?</span>
+                        <i class="fas fa-chevron-down text-cyan-400 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="faq-content px-6 pb-5">
+                        <p class="text-gray-400">Absolutely! We offer various support and maintenance packages including 24/7 monitoring, regular security updates, performance optimization, and feature enhancements. Our dedicated support team ensures your digital assets remain secure and up-to-date.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="faq-item glass rounded-xl overflow-hidden hover:bg-white/5 transition">
+                    <button class="faq-toggle w-full px-6 py-5 text-left flex items-center justify-between group">
+                        <span class="font-semibold group-hover:text-cyan-400 transition">What industries do you work with?</span>
+                        <i class="fas fa-chevron-down text-cyan-400 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="faq-content px-6 pb-5">
+                        <p class="text-gray-400">We work across diverse industries including finance, healthcare, e-commerce, technology startups, government agencies, and education. Our experience spans various regulatory environments including HIPAA, PCI-DSS, SOC 2, and GDPR compliance.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="faq-item glass rounded-xl overflow-hidden hover:bg-white/5 transition">
+                    <button class="faq-toggle w-full px-6 py-5 text-left flex items-center justify-between group">
+                        <span class="font-semibold group-hover:text-cyan-400 transition">How do you ensure project confidentiality?</span>
+                        <i class="fas fa-chevron-down text-cyan-400 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="faq-content px-6 pb-5">
+                        <p class="text-gray-400">Confidentiality is paramount in our work. We sign comprehensive NDAs, implement strict access controls, use encrypted communication channels, and follow industry best practices for data handling. Our team undergoes regular security training and background checks.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-black/20 section-padding">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-cyan-400 text-sm font-semibold tracking-wider uppercase">Contact Us</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6">Get In <span class="gradient-text">Touch</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Ready to secure your digital future? Let's discuss your project.</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Contact Form -->
+                <div class="glass rounded-2xl p-8">
+                    <form id="contactForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">First Name</label>
+                                <input type="text" name="firstName" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 outline-none transition text-white" placeholder="John">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Last Name</label>
+                                <input type="text" name="lastName" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 outline-none transition text-white" placeholder="Doe">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Email</label>
+                            <input type="email" name="email" id="contactEmail" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 outline-none transition text-white" placeholder="john@example.com">
+                            <p id="emailValidation" class="text-xs mt-1 hidden"></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Subject</label>
+                            <select name="subject" class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 outline-none transition text-white appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,<svg%20xmlns%3D\"http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg\"%20viewBox%3D\"0%200%20256%20448\"%20enable-background%3D\"new%200%200%20256%20448\"><path%20fill%3D\"%2300c6ff\"%20d%3D\"M255.9%20168c0-4.2-1.6-7.9-4.8-11.2-3.2-3.2-6.9-4.8-11.2-4.8H16c-4.2%200-7.9%201.6-11.2%204.8S0%20163.8%200%20168c0%204.4%201.6%208.2%204.8%2011.4l112%20112c3.1%203.1%206.8%204.6%2011.2%204.6%204.4%200%208.2-1.5%2011.4-4.6l112-112c3.2-3.2%204.8-7%204.8-11.4z\"></path></svg>')] bg-[length:20px] bg-[center_right_1rem] bg-no-repeat">
+                                <option value="general" class="bg-gray-900">General Inquiry</option>
+                                <option value="web-dev" class="bg-gray-900">Web Development</option>
+                                <option value="security" class="bg-gray-900">Cybersecurity</option>
+                                <option value="cloud" class="bg-gray-900">Cloud Solutions</option>
+                                <option value="consulting" class="bg-gray-900">IT Consulting</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Message</label>
+                            <textarea name="message" rows="5" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 outline-none transition text-white resize-none" placeholder="Tell us about your project..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-cyber w-full py-4 rounded-lg text-gray-900 font-bold flex items-center justify-center gap-2 group">
+                            <span>Send Message</span>
+                            <i class="fas fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Contact Info & Map -->
+                <div class="space-y-8">
+                    <!-- Contact Cards -->
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div class="glass rounded-xl p-6 flex items-start gap-4 hover:bg-white/5 transition">
+                            <div class="w-12 h-12 rounded-lg bg-cyan-400/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-cyan-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Address</h4>
+                                <p class="text-gray-400 text-sm">204 Du Toit<br>Manzini, M 200</p>
+                            </div>
+                        </div>
+                        <div class="glass rounded-xl p-6 flex items-start gap-4 hover:bg-white/5 transition">#8098ff
+                            <div class="w-12 h-12 rounded-lg bg-cyan-400/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-phone text-cyan-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Phone</h4>
+                                <p class="text-gray-400 text-sm">+(268) 2405-4337<br>+(268) 7607-5431</p>
+                            </div>
+                        </div>
+                        <div class="glass rounded-xl p-6 flex items-start gap-4 hover:bg-white/5 transition">
+                            <div class="w-12 h-12 rounded-lg bg-cyan-400/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-envelope text-cyan-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Email</h4>
+                                <p class="text-gray-400 text-sm">info: airskullcyberallaince@gmail.com<br>support @airskullcyberalliance.com</p>
+                            </div>
+                        </div>
+                        <div class="glass rounded-xl p-6 flex items-start gap-4 hover:bg-white/5 transition">
+                            <div class="w-12 h-12 rounded-lg bg-cyan-400/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-clock text-cyan-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Working Hours</h4>
+                                <p class="text-gray-400 text-sm">Mon - Fri: 9AM - 6PM<br>24/7 Security Support</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Map -->
+                    <div class="glass rounded-xl overflow-hidden h-64">
+                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-cyan-400/10 to-blue-600/10">
+                            <div class="text-center p-8">
+                                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-cyan-400/20 flex items-center justify-center">
+                                    <i class="fas fa-map text-2xl text-cyan-400"></i>
+                                </div>
+                                <h4 class="font-bold text-lg mb-2">Our Location</h4>
+                                <p class="text-gray-400">204 Du Toit, Manzini</p>
+                                <p class="text-gray-400 text-sm">Zoom in to explore our headquarters</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Media -->
+                    <div class="glass rounded-xl p-6">
+                        <h4 class="font-bold mb-4">Follow Us</h4>
+                        <div class="flex gap-4">
+                            <a href="#" class="flex-1 glass rounded-lg p-4 flex flex-col items-center justify-center hover:bg-white/5 transition group">
+                                <i class="fab fa-facebook text-2xl text-cyan-400 mb-2 group-hover:scale-110 transition"></i>
+                                <span class="text-sm">Facebook</span>
+                            </a>
+                            <a href="#" class="flex-1 glass rounded-lg p-4 flex flex-col items-center justify-center hover:bg-white/5 transition group">
+                                <i class="fab fa-youtube text-2xl text-cyan-400 mb-2 group-hover:scale-110 transition"></i>
+                                <span class="text-sm">YouTube</span>
+                            </a>
+                            <a href="#" class="flex-1 glass rounded-lg p-4 flex flex-col items-center justify-center hover:bg-white/5 transition group">
+                                <i class="fab fa-github text-2xl text-cyan-400 mb-2 group-hover:scale-110 transition"></i>
+                                <span class="text-sm">GitHub</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pt-20 pb-8 border-t border-white/10 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+        <div class="container mx-auto px-6 relative">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Company Info -->
+                <div>
+                    <a href="#home" class="flex items-center gap-3 mb-6 group">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center glow group-hover:scale-110 transition">
+                          <img src="https://html-generator.com/uploads/images/2025/12/08/248049WIVH7PHF7.gif" width="120" height="80" alt="marquee image"></i>
+                        </div>
+                        <span class="text-xl font-bold gradient-text">Airskull Cyber</span>
+                    </a>
+                    <p class="text-gray-400 mb-6">Securing your digital future with cutting-edge cybersecurity solutions and innovative web development.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/20 transition hover:scale-110">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/20 transition hover:scale-110">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/20 transition hover:scale-110">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/20 transition hover:scale-110">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-gray-400 hover:text-cyan-400 transition flex items-center gap-2 group">
+                            <i class="fas fa-chevron-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Home
+                        </a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-cyan-400 transition flex items-center gap-2 group">
+                            <i class="fas fa-chevron-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Services
+                        </a></li>
+                        <li><a href="#portfolio" class="text-gray-400 hover:text-cyan-400 transition flex items-center gap-2 group">
+                            <i class="fas fa-chevron-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Portfolio
+                        </a></li>
+                        <li><a href="#pricing" class="text-gray-400 hover:text-cyan-400 transition flex items-center gap-2 group">
+                            <i class="fas fa-chevron-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Pricing
+                        </a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-cyan-400 transition flex items-center gap-2 group">
+                            <i class="fas fa-chevron-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Contact
+                        </a></li>
+                    </ul>
+                </div>
+                
+                <!-- Services -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400 transition">Web Development</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400 transition">Cybersecurity</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400 transition">Cloud Solutions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400 transition">IT Consulting</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400 transition">Managed Services</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400 transition">Training</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Newsletter</h4>
+                    <p class="text-gray-400 mb-4">Subscribe for security tips and updates.</p>
+                    <form id="newsletterForm" class="space-y-3">
+                        <input type="email" id="newsletterEmail" placeholder="Enter your email" required class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 outline-none transition text-white">
+                        <button type="submit" class="btn-cyber w-full py-3 rounded-lg text-gray-900 font-semibold flex items-center justify-center gap-2 group">
+                            <span>Subscribe</span>
+                            <i class="fas fa-paper-plane group-hover:translate-x-1 transition"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Bottom Footer -->
+            <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400 text-sm">
+                <p>&copy; 2030 Airskull Cyber Alliance. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-cyan-400 transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-cyan-400 transition">Terms of Service</a>
+                    <a href="#" class="hover:text-cyan-400 transition">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration
+        const config = {
+            supabase: {
+                url: 'https://bfmlemfufieixrxyytyx.supabase.co',
+                anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmbWxlbWZ1ZmllaXhyeHl5dHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk2NTEyNjcsImV4cCI6MjA3NTIyNzI2N30.KZmXUB-V92lsv41L3q3ZohduhAFHbVbDNlbSKE-o5-M'
+            },
+            apiLayer: {
+                apiKey: 'NdoJcCdZSbZln8IuLnPDUhgZ775u5Wyt'
+            }
+        };
+
+        // Initialize Supabase
+        const supabase = window.supabase.createClient(config.supabase.url, config.supabase.anonKey);
+
+        // State Management
+        let currentUser = null;
+        let isLoginMode = true;
+        let isDarkMode = true;
+
+        // DOM Elements
+        const preloader = document.getElementById('preloader');
+        const progressBar = document.getElementById('progressBar');
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorOutline = document.getElementById('cursorOutline');
+        const backToTop = document.getElementById('backToTop');
+        const floatingChat = document.getElementById('floatingChat');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeChat = document.getElementById('closeChat');
+        const chatInput = document.getElementById('chatInput');
+        const sendChat = document.getElementById('sendChat');
+        const chatMessages = document.getElementById('chatMessages');
+        const header = document.getElementById('header');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const loginBtn = document.getElementById('loginBtn');
+        const authModal = document.getElementById('authModal');
+        const closeModal = document.getElementById('closeModal');
+        const authForm = document.getElementById('authForm');
+        const authToggle = document.getElementById('authToggle');
+        const authTitle = document.getElementById('authTitle');
+        const authBtnText = document.getElementById('authBtnText');
+        const authToggleText = document.getElementById('authToggleText');
+        const authSpinner = document.getElementById('authSpinner');
+        const contactForm = document.getElementById('contactForm');
+        const newsletterForm = document.getElementById('newsletterForm');
+        const notificationContainer = document.getElementById('notification-container');
+        const themeToggle = document.getElementById('themeToggle');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeApp();
+        });
+
+        async function initializeApp() {
+            // Hide preloader after 1.5 seconds
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+            }, 1500);
+
+            // Generate Particles
+            createParticles();
+            
+            // Initialize animations
+            initializeAnimations();
+            
+            // Initialize custom cursor
+            initializeCustomCursor();
+            
+            // Check existing session
+            await checkSession();
+            
+            // Initialize theme
+            initializeTheme();
+            
+            // Initialize count-up animations
+            initializeCountUp();
+            
+            // Initialize chat
+            initializeChat();
+        }
+
+        // Generate Particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = Math.random() * 10 + 10 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Initialize Custom Cursor
+        function initializeCustomCursor() {
+            document.addEventListener('mousemove', (e) => {
+                cursorDot.style.left = e.clientX + 'px';
+                cursorDot.style.top = e.clientY + 'px';
+                
+                cursorOutline.animate({
+                    left: `${e.clientX}px`,
+                    top: `${e.clientY}px`
+                }, { duration: 500, fill: 'forwards' });
+            });
+
+            // Add hover effects
+            document.querySelectorAll('a, button, .card-hover, .btn-cyber').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursorDot.style.transform = 'scale(1.5)';
+                    cursorOutline.style.transform = 'scale(1.5)';
+                    cursorOutline.style.borderColor = '#00c6ff';
+                });
+                
+                el.addEventListener('mouseleave', () => {
+                    cursorDot.style.transform = 'scale(1)';
+                    cursorOutline.style.transform = 'scale(1)';
+                    cursorOutline.style.borderColor = 'rgba(0, 198, 255, 0.5)';
+                });
+            });
+        }
+
+        // Initialize Animations
+        function initializeAnimations() {
+            // Intersection Observer for animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            // Observe elements
+            document.querySelectorAll('.card-hover, .portfolio-item, .faq-item').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Initialize Count Up
+        function initializeCountUp() {
+            const countElements = document.querySelectorAll('.count-up');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const countElement = entry.target;
+                        const target = parseInt(countElement.getAttribute('data-count'));
+                        const suffix = countElement.textContent.includes('%') ? '%' : '+';
+                        const duration = 2000;
+                        const step = target / (duration / 16);
+                        let current = 0;
+                        
+                        const timer = setInterval(() => {
+                            current += step;
+                            if (current >= target) {
+                                current = target;
+                                clearInterval(timer);
+                          20301  }
+                            countElement.textContent = suffix === '%' 
+                                ? current.toFixed(1) + suffix
+                                : Math.floor(current) + suffix;
+                        }, 16);
+                        
+                        observer.unobserve(countElement);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            countElements.forEach(el => observer.observe(el));
+        }
+
+        // Initialize Chat
+        function initializeChat() {
+            floatingChat.addEventListener('click', () => {
+                chatWindow.classList.toggle('active');
+            });
+
+            closeChat.addEventListener('click', () => {
+                chatWindow.classList.remove('active');
+            });
+
+            sendChat.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+
+                // Add user message
+                addMessage(message, 'user');
+                
+                // Clear input
+                chatInput.value = '';
+                
+                // Simulate AI response after delay
+                setTimeout(() => {
+                    const responses = [
+                        "I can help you with cybersecurity assessments, web development consultations, or answer any questions about our services. What specific area are you interested in?",
+                        "Thanks for your message! Our team typically responds within 1-2 business hours. In the meantime, would you like me to schedule a consultation?",
+                        "For immediate security concerns, please contact our 24/7 security hotline at +1-555-EMERGENCY. For general inquiries, I'm here to help!",
+                        "I notice you're interested in our services. Would you like me to send you more information about our cybersecurity packages?"
+                    ];
+                    
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addMessage(randomResponse, 'ai');
+                }, 1000);
+            }
+
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `flex items-start gap-3 ${sender === 'user' ? 'flex-row-reverse' : ''}`;
+                
+                const avatar = sender === 'user' 
+                    ? `<div class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-user text-xs text-white"></i>
+                        </div>`
+                    : `<div class="w-8 h-8 rounded-full bg-cyan-400/20 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-robot text-cyan-400 text-sm"></i>
+                        </div>`;
+                
+                messageDiv.innerHTML = `
+                    ${avatar}
+                    <div class="${sender === 'user' ? 'glass rounded-2xl rounded-tr-none' : 'glass rounded-2xl rounded-tl-none'} px-4 py-3 max-w-[80%]">
+                        <p class="text-sm">${text}</p>
+                    </div>
+                `;
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        // Initialize Theme
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('airskull_theme');
+            isDarkMode = savedTheme ? savedTheme === 'dark' : true;
+            updateTheme();
+            
+            themeToggle.addEventListener('click', () => {
+                isDarkMode = !isDarkMode;
+                updateTheme();
+                localStorage.setItem('airskull_theme', isDarkMode ? 'dark' : 'light');
+            });
+        }
+
+        function updateTheme() {
+            themeToggle.classList.toggle('active', !isDarkMode);
+            
+            if (!isDarkMode) {
+                document.body.style.background = 'linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 50%, #f0f7ff 100%)';
+                document.body.style.color = '#051937';
+            } else {
+                document.body.style.background = 'linear-gradient(135deg, #051937 0%, #0a2540 50%, #051937 100%)';
+                document.body.style.color = 'white';
+            }
+        }
+
+        // Notification System
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification glass px-6 py-4 rounded-lg flex items-center gap-3 animate__animated animate__fadeInRight ${type === 'success' ? 'border-l-4 border-green-500' : 'border-l-4 border-red-500'}`;
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle text-green-500' : 'fa-exclamation-circle text-red-500'}"></i>
+                <span>${message}</span>
+            `;
+            notificationContainer.appendChild(notification);
+            setTimeout(() => {
+                notification.classList.add('animate__fadeOutRight');
+                setTimeout(() => notification.remove(), 300);
+            }, 4500);
+        }
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            // Header effect
+            if (window.scrollY > 100) {
+                header.classList.add('glass', 'shadow-lg');
+            } else {
+                header.classList.remove('glass', 'shadow-lg');
+            }
+            
+            // Progress bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+            
+            // Back to top button
+            if (window.scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // Back to top
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Mobile Menu Toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+                mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+            });
+        });
+
+        // Auth Modal
+        loginBtn.addEventListener('click', () => {
+            authModal.classList.remove('hidden');
+            authModal.classList.add('flex');
+        });
+
+        closeModal.addEventListener('click', () => {
+            authModal.classList.add('hidden');
+            authModal.classList.remove('flex');
+        });
+
+        authModal.addEventListener('click', (e) => {
+            if (e.target === authModal) {
+                authModal.classList.add('hidden');
+                authModal.classList.remove('flex');
+            }
+        });
+
+        // Toggle Login/Signup
+        authToggle.addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            authTitle.textContent = isLoginMode ? 'Secure Login' : 'Create Account';
+            authBtnText.textContent = isLoginMode ? 'Login' : 'Sign Up';
+            authToggleText.textContent = isLoginMode ? "Don't have an account?" : "Already have an account?";
+            authToggle.textContent = isLoginMode ? 'Sign Up' : 'Login';
+        });
+
+        // Auth Form Submit
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+
+            authSpinner.classList.remove('hidden');
+            authBtnText.textContent = isLoginMode ? 'Logging in...' : 'Creating account...';
+
+            try {
+                let result;
+                if (isLoginMode) {
+                    result = await supabase.auth.signInWithPassword({ email, password });
+                } else {
+                    result = await supabase.auth.signUp({ email, password });
+                }
+
+                if (result.error) throw result.error;
+
+                currentUser = result.data.user;
+                localStorage.setItem('airskull_user', JSON.stringify(currentUser));
+                
+                showNotification(isLoginMode ? 'Login successful!' : 'Account created! Please check your email.');
+                authModal.classList.add('hidden');
+                authModal.classList.remove('flex');
+                updateAuthUI();
+            } catch (error) {
+                showNotification(error.message, 'error');
+            } finally {
+                authSpinner.classList.add('hidden');
+                authBtnText.textContent = isLoginMode ? 'Login' : 'Sign Up';
+            }
+        });
+
+        // Update Auth UI
+        function updateAuthUI() {
+            if (currentUser) {
+                loginBtn.innerHTML = `<i class="fas fa-user-circle mr-2"></i>${currentUser.email.split('@')[0]}`;
+                loginBtn.onclick = handleLogout;
+            } else {
+                loginBtn.innerHTML = 'Login';
+                loginBtn.onclick = () => {
+                    authModal.classList.remove('hidden');
+                    authModal.classList.add('flex');
+                };
+            }
+        }
+
+        // Logout
+        async function handleLogout() {
+            await supabase.auth.signOut();
+            currentUser = null;
+            localStorage.removeItem('airskull_user');
+            showNotification('Logged out successfully');
+            updateAuthUI();
+        }
+
+        // Check existing session
+        async function checkSession() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                currentUser = session.user;
+                updateAuthUI();
+            } else {
+                const storedUser = localStorage.getItem('airskull_user');
+                if (storedUser) {
+                    . = JSON.parse(storedUser);
+                    updateAuthUI();
+                }
+            }
+        }
+
+        // Contact Form
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                // Save to Supabase
+                const { error } = await supabase
+                    .from('contacts')
+                    .insert([{
+                        first_name: data.firstName,
+                        last_name: data.lastName,
+                        email: data.email,
+                        subject: data.subject,
+                        message: data.message,
+                        created_at: new Date().toISOString()
+                    }]);
+                
+                if (error) {
+                    console.log('Supabase error:', error);
+                }
+                
+                // Store locally as backup
+                const contacts = JSON.parse(localStorage.getItem('airskull_contacts') || '[]');
+                contacts.push({ ...data, timestamp: Date.now() });
+                localStorage.setItem('airskull_contacts', JSON.stringify(contacts));
+                
+                showNotification('Message sent successfully! We\'ll get back to you soon.');
+                contactForm.reset();
+                emailValidation.classList.add('hidden');
+            } catch (error) {
+                showNotification('Failed to send message. Please try again.', 'error');
+            }
+        });
+
+        // Newsletter Form
+        newsletterForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('newsletterEmail').value;
+            
+            try {
+                const { error } = await supabase
+                    .from('newsletter')
+                    .insert([{ email, subscribed_at: new Date().toISOString() }]);
+                
+                if (error) {
+                    console.log('Supabase error:', error);
+                }
+                
+                // Store locally
+                const subscribers = JSON.parse(localStorage.getItem('airskull_newsletter') || '[]');
+                subscribers.push({ email, timestamp: Date.now() });
+                localStorage.setItem('airskull_newsletter', JSON.stringify(subscribers));
+                
+                showNotification('Successfully subscribed to newsletter!');
+                newsletterForm.reset();
+            } catch (error) {
+                showNotification('Failed to subscribe. Please try again.', 'error');
+            }
+        });
+
+        // Portfolio Filter
+        const filterButtons = document.querySelectorAll('.portfolio-filter');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => {
+                    b.classList.remove('text-cyan-400');
+                    b.classList.add('text-gray-400');
+                });
+                btn.classList.remove('text-gray-400');
+                btn.classList.add('text-cyan-400');
+
+                const filter = btn.dataset.filter;
+                portfolioItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, 10);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('i');
+                
+                // Close all other FAQ items
+                document.querySelectorAll('.faq-content').forEach(c => {
+                    if (c !== content && c.classList.contains('open')) {
+                        c.classList.remove('open');
+                        c.previousElementSibling.querySelector('i').style.transform = 'rotate(0deg)';
+                    }
+                });
+                
+                content.classList.toggle('open');
+                icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+            });
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Tooltip initialization
+        document.querySelectorAll('.tooltip').forEach(tooltip => {
+            tooltip.addEventListener('mouseenter', () => {
+                const tooltipText = tooltip.querySelector('.tooltip-text');
+                if (tooltipText) {
+                    tooltipText.style.visibility = 'visible';
+                    tooltipText.style.opacity = '1';
+                }
+            });
+            
+            tooltip.addEventListener('mouseleave', () => {
+                const tooltipText = tooltip.querySelector('.tooltip-text');
+                if (tooltipText) {
+                    tooltipText.style.visibility = 'hidden';
+                    tooltipText.style.opacity = '0';
+                }
+            });
+        });
+
+        // Console Easter Egg
+        console.log('%c🛡️ Airskull Cyber Alliance', 'font-size: 24px; font-weight: bold; color: #00c6ff;');
+        console.log('%cSecuring your digital future | Enhanced v2.0', 'font-size: 14px; color: #4de3ff;');
+        console.log('%c🔒 All systems secure | Ready for deployment', 'font-size: 12px; color: #00c6ff;');
+    </script>
+</body>
+</html>
